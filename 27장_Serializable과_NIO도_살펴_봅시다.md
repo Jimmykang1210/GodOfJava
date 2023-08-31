@@ -1,0 +1,42 @@
+### 27장 Serializable과 NIO도 살펴 봅시다
+
+- Serializable
+    - 생성한 클래스가 파일에 읽거나 쓸 수 있도록 하거나, 다른 서버로 보내거나 받을 수 있도록 하려면 반드시 이 인터페이스를 구현 해야 함
+    - Serializable 인터페이스를 구현하면 JVM에서 해당 객체는 저장하거나 다른 서버로 전송할 수 있도록 함
+    - Serializable 인터페이스를 구현 시, `serialVersionUID` 값을 지정해 주는 것이 좋음 → 비 지정 시, 자바 소스가 컴파일 될 때 자동으로 생성
+        - 반드시 `static final long serialVersionUID` 으로 선언해야 인식
+        - 해당 객체의 버전을 명시하는데 사용
+        - 각 서버가 해당 객체가 같은지 다를지를 확인할 수 있도록 하기 위해서는 `serialVersionUID`로 관리
+        - 클래스 이름이 같더라도, UID가 다르면 다른 클래스로 인식, 같은 UID라더라도 변수의 개수나 타입 등이 다르면 다른 클래스로 인식
+    - Serializable 인터페이스 구현 시, `serialVersionUID`를 명시적으로 지정하면 변수가 변경되더라도 예외는 발생하지 않음
+    - Serializable 한 객체의 내용이 바뀌어도 예외가 발생하지 않고 데이터가 꼬일 수 있기 때문에 → 데이터 변경 시, `serialVersionUID`의 값을 변경하는 습관 필요
+- `transient`
+    - 객체를 저장하거나, 다른 JVM으로 보낼 때, `transient` 예약어를 사용하여 선언한 변수는 Serializable 대상에서 제외
+    - 보안상 중요한 변수나 꼭 지정해야 할 필요가 없는 변수에 대해서는 `transient` 사용 가능
+- NIO는 속도 때문에 추가된 기능
+    - Stream을 사용하지 않고, Channel (물건을 처리하는 도매상)과 Buffer (소비자에게 물건을 파는 소매상)를 사용
+    - 자바 NIO에서 데이터를 주고 받을 때에는 버퍼를 통해 처리
+    - Channel의 경우 객체만 생성하여 read()나 write() 메소드만 사용하면 되나 Buffer의 경우 간단하지 않음
+    - `position()`: 현재 위치를 나타내는 메소드
+    - `limit()`: 일걱나 쓸 수 없는 위치
+    - `capacity()`: 버퍼의 크기를 나타내는 것
+- 정리 문제
+    - `java.io.Serializable`을 import하는 이유는 무엇인가요?
+        - 생성한 객체를 파일로 저장하거나, 저장하여 읽거나 또는 객체를 다른 서버로 보내거나 다른 서버에서 생성한 객체를 받거나 하는 일련의 작업을 위함
+        - Serializable 인터페이스를 구현하여 직렬화 및 역직렬화를 위해서
+    - `java.io.Serializable`의 `serialversionuID`를 지정하는 이유는 무엇인가요?
+        - 객체의 버전을 명시하여 객체가 같은지 다른지 확인하기 위해서
+    - 자바에서 객체를 파일로 읽거나 쓸 때 사용하는 `Stream` 클래스 이름은 무엇인가요?
+        - `FileInputStream, FileOutputStream`
+    - transient 예약어의 용도는 무엇인가요?
+        - 보안상 중요한 변수나 꼭 지정해야 할 필요가 없는 변수에 적용, 직렬화 대상에서 제외
+    - NIO가 생긴 이유는 무엇인가요?
+        - Stream 대신 Channel과 Buffer를 사용하여 I/O 기반의 속도를 개선
+    - NIO에서 Channe]의 용도는 무엇인가요?
+        - 데이터를 중간에 처리하는 역할
+    - NIO에서 Buffer의 용도는 무엇인가요?
+        - 데이터를 담는 역할
+    - NIO에서 Buffer의 상태를 확인하기 위한 메소드들에는 어떤 것들이 있나요?
+        - `position(), limit(), capacity()`
+    - NIO에서 Buffer의 position을 변경하기 위한 메소드들에는 어떤 것들이 있나요?
+        - `flip(), mark(), reset(), rewind(), remaining(), hasRemaining(), clear()`

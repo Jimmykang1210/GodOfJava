@@ -1,0 +1,86 @@
+### 15장 String
+
+- `String` 클래스는 `final`로 선언되어있어 자식 클래스를 만들 수 없음
+- `String` 클래스는 `implements`로 `Serializable, Comparable, CharSequence`  인터페이스를 가짐
+    - `Serializable` 인터페이스는 구현해야 하는 메소드가 하나도 없음
+    - `Comparable` 인터페이스의 `compareTo()` 메소드는 리턴 타입이 `int`, 순서 상 앞에 있으면 -1, 뒤에 있으면 1, 같으면 0 리턴
+    - `CharSequence` 인터페이스는 문자열을 다루기 위한 클래스
+- 한글을 처리하기 위해 자바에서 많이 사용하는 캐릭터 셋은 `UTF-16, UTF-8, EUC-KR`
+    - **`UTF-8`**
+        - 대부분의 한글 문자는 3바이트로 인코딩
+        - 전 세계의 모든 문자를 표현할 수 있는 유니코드 인코딩 방식
+        - ASCII 문자열은 UTF-8로도 동일하게 인코딩 가능
+    - **`UTF-16`**: 대부분의 한글 문자는 2바이트로 인코딩, 유니코드 인코딩 방식
+    - **`EUC-KR`**: 한글 문자는 바이트로 인코딩, 한국어 전용 인코딩
+    - 자바에서 한글이 몇바이트를 점유하는지 알아두면 좋음
+- 존재하지 않는 캐릭터 셋의 이름을 지정할 경우 이 예외가 발생, 반드시 `try-catch`로 감싸주거나 메소드 선언 시 `throws` 구문 추가 필요
+- 객체가 `null`이라는 것은 객체가 아무런 초기화가 되어 있지 않으며, 클래스에 선언되어 있는 어떤 메소드도 사용할 수 없다는 의미
+    - `null`인 객체의 메소드를 호출하는 순간 예외 발생 → `String` 뿐만 아니라 모든 객체를 처리할 때에는 `null` 체크 필요
+    - `null` 체크하지 않으면, 값이 `null`인 객체의 메소드를 호출하여 `NullPointException` 발생
+    - `null` 체크를 하지 않아서 애플리케이션이 비정상으로 작동하여 장애로 이어질 수  있음
+    - 메소드의 매개 변수로 넘어오는 객체가 `null`이 될 확률이 조금이라도 있으면 반드시 확인하는 습관 필요
+- `String` 클래스 객체 비교 메소드
+    - 문자열의 길이 확인 메소드
+        - ex) `length()`: `int` 리턴, 공백도 길이에 포함하며 한글도 한 글자로 취급
+    - 문자열이 비어 있는지 확인 메소드
+        - ex) `isEmpty()`: `boolean` 리턴
+    - 문자열이 같은지 비교 메소드
+        - ex) `equals(Object anObject), compareTo(String anotherString)` 등
+    - 특정 조건에 맞는 문자열이 있는지 확인 메소드
+        - ex) `startsWith(String prefix), contains(CharSequence s)` 등
+- `String` 클래스 위치 조회 메소드
+    - `indexOf()`: 앞에서부터 문자열이나 `char` 찾음
+    - `lastIndexOf()`: 뒤에서부터 문자열이나 `char` 찾음
+- `String` 클래스 값 추출 메소드
+    - `substring(int beginIndex)`: `beginIndex`부터 끝까지 대상 문자열을 잘라 `String`으로 리턴
+    - `split(String regex)`: `regex`에 있는 정규 표현식에 맞추어 문자열을 잘라 `String` 배열로 리턴
+- `String` 클래스 값 변경 메소드
+    - `trim()`: 문자열의 맨 앞과 맨 뒤에 있는 공백들을 제거한 문자열 객체를 리턴
+    - `replace(CharSequence target, CharSequence replacement)`: 해당 문자열에 있는 `oldChar`의 값을 `newChar`로 대치, 대소문자를 구분
+    - `format(String format, Object… args)`: 정해진 기준에 맞춘 문자열이 있으면 그 기준에 있는 내용을 변환
+        - `%s`는 `String`, `%d`는 정수형, `%f`는 소수점이 있는 숫자, `%%`는 %를 의미
+    - `valueOf()`
+        - 기본 자료형 값들을 문자열로 변경 가능
+        - 매개 변수로 객체가 넘어 왔을 경우, `toString()`을 구현한 객체나 정상적인 객체를 `valueOf()` 메소드에 넘겨주면 `toString()`의 결과 리턴
+        - 객체 출력 시, `nullPointException`을 방지하기 위해 `valueOf()` 메소드를 사용 하면 좋음, `null` 인 경우 `null` 이라는 문자열을 리턴
+- `==` 비교와 `equlas()` 메소드 비교는 `==` 비교가 메모리의 위치를 비교하기 때문에 훨씬 빠름
+- String은 불변한 객체, 한번 만들어지면 더이상 값을 바꿀 수 없음
+    - String 문자열을 더하면 새로운 String 객체가 생성되고, 기존 객체는 버려짐
+    - 계속 하나의 String을 만들어 계속 더하는 작업을 하면, 계속 쓰레기가 생성됨 → GC의 대상
+- `StringBuffer` 클래스는 Thread Safe, `StringBuilder` 클래스는 Thread safe하지 않음
+    - 속도는 `StringBuilder` 클래스가 더 빠름
+    - 두 클래스 모두 문자를 더하더라도 새로운 객체를 생성하지 않음
+- 어떤 클래스에 문자열을 생성하여 더하기 위한 문자열을 처리하기 위한 인스턴스 변수가 선언되고, 여러 쓰레드에서 이 변수를 동시에 접근하는 일이 있을 경우
+    
+    → 반드시 `StringBuffer` 클래스 사용 필요 **(테스트 해볼 예정)**
+    
+- 정리 문제
+    - `string` 클래스는 `final` 클래스인가요? 만약 그렇다면, 그 이유는 무엇인가요?
+        - `final` 클래스, 상속받아 사용하지 못하도록 막음
+    - `string` 클래스가 구현한 인터페이스에는 어떤 것들이 있나요?
+        - `Serializable, Comparable ,CharSequence`
+    - `string` 클래스의 생성자 중에서 가장 의미없는 (사용할 필요가 없는) 생성자는 무엇인가요?
+        - 기본 생성자
+    - `string` 문자열을 `byte` 배열로 만드는 메소드의 이름은 무엇인가요?
+        - `getBytes()`
+    - `string` 문자열의 메소드를 호출하기 전에 반드시 점검해야 하는 사항은 무엇인가요?
+        - `null` 체크
+    - `string` 문자열의 길이를 알아내는 메소드는 무엇인가요?
+        - `length()`
+    - `string` 클래스의 `equals()` 메소드와 `compareTo()` 메소드의 공통점과 차이점은 무엇인가요?
+        - 공통점은 객체의 주소값이 아닌 값만 가지고 비교한
+        - 차이점은 리턴 값이 `equals()` 는 `boolean` 리턴, `compareto()`는 문자들의 차이의 값 리턴
+    - 문자열이 "서울시"로 시작하는지를 확인하려면 `string`의 어떤 메소드를 사용해야 하나요?
+        - `startswith()`
+    - 문자열에 한국'이라는 단어의 위치를 찾아내려고 할 때에는 `string`의 어떤 메소드를 사용해야 하나요?
+        - `indexOf()`
+    - 9번 문제의 답에서 한국'이 문자열에 없을 때 결과 값은 무엇인가요?
+        - `-1`
+    - 문자열의 1번째부터 10번째 위치까지의 내용을 `string`으로 추출하려고 합니다. 어떤 메소드를 사용 해야 하나요?
+        - `substring()`
+    - 문자열의 모든 공백을 표시로 변환하려고 합니다. 어떤 메소드를 사용하는 것이 좋을까요?
+        - `replaceAll()`
+    - `string`의 단점을 보완하기 위한 두개의 클래스는 무엇인가요?
+        - `StringBuffer, StringBuilder`
+    - 13번의 답에서 문자열을 더하기 위한 메소드의 이름은 무엇인가요?
+        - `append()`

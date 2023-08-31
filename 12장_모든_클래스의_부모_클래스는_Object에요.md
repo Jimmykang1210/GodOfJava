@@ -1,0 +1,42 @@
+### 12장 모든 클래스의 부모 클래스는 Object에요
+
+- 모든 클래스의 부모 클래스는 `Object`
+    - `Object` 클래스에 있는 메소드들을 통해서 클래스의 기본적인 행동을 정의
+    - `Object` 클래스의 메소드는 객체를 처리하기 위한 메소드와, 쓰레드를 처리하기 위한 메소드로 나뉨
+- 쓰레드: 프로그램이 실행되는 작은 단위 중 하나
+- 가비지 컬렉터: 객체를 생성 한 뒤, 사용 후 필요 없을 경우 프로세스 내에 객체를 정리할지 확인 후 처리
+- `ToString()` 메소드는 `Object` 클래스에 선언되어 있기 때문에 `toString()` 메소드를 호출해도 문제되지 않음
+- `String`을 제외한 참조 자료형에 더하기 연산자를 수행 시, 자동으로 `toString()` 메소드가 호출되어 객체의 위치에 `String` 값이 놓임
+    - `Object` 클래스에 구현되어 있는 `toString()` 메소드
+        - `getClass().getName() + ‘@’ + Integer.toHexString(hashCode())`
+    - 일상적으로 DTO에는 `toString()` 메소드를 Overriding 해 놓는 것이 좋음
+- `==, !=` 연산자는 기본 자료형에서만 사용 가능하며, 값을 비교하는 것이 아닌 주소값을 비교
+- `equals()` 메소드를 Overriding 시 반드시 지킬 조건
+    - 재귀: null이 아닌 x라는 객체의 `x.equals(x)` 결과는 항상 `true`
+    - 대칭: null이 아닌 x와 y 객체, `y.equals(x)=true` 리턴 시, `x.equals(y)`도 반드시 `true`
+    - 타동적: null이 아닌 x,y,z 객체, `x.equals(y)=ture, y.equals(z)=true` 이면, `x.equals(z)`도 반드시 `true`
+    - 일관: null이 아닌 x, y 객체가 변경되지 않는 상황에서는 몇 번 호출하더라도 `x.equals(y)`의 결과는 항상 `true` 이거나 항상 `false`
+    - null과 비교: null 아닌 x객체의 `x.equals(null)` 결과는 항상 `false`
+- `equals()` 메소드를 `Overriding` 시에 `hashCode()` 메소드도 같이 `Overriding` 해야 함
+    - `equals()` 메소드의 결과가 true인데 불구하고 `hashCode()` 메소드의 값이 다르면 안됨
+    - `hashCode()` 메소드는 기본적으로 객체의 메모리 주소를 16진수로 리턴
+- `hashCode()` 메소드를 `Overriding` 시 반드시 지킬 조건
+    - 어떤 객체에 대해 이 메소드가 호출 시, 항상 동일한 int 값 리턴 필요, 자바 프로그램 실행마다 같지는 않음
+    - 두 객체에 대해 `equals()` 메소드 사용하여 비교한 결과가 `true`일때, 두 객체의 `hashCode()` 메소드 호출하면 동일한 `int`값 리턴
+    - 두 객체를 `equals()` 메소드를 사용하여 비교한 결과 `false` 리턴 시, `hashCode()` 메소드를 호출한 `int`값이 무조건 달라야 할 필요는 없음
+        - 서로 다른 `int`값을 제공하면 hashtable 성능을 향상시키는데 도움
+- 정리 문제
+    - 모든 클래스의 최상위 부모 클래스인 `Object` 클래스는 어떤 패키지에 선언되어 있나요?
+        - `java.lang`
+    - 클래스가 어떻게 선언되어 있는지 확인할 수 있는 명령어(실행 파일)의 이름은 무잇인가요?
+        - `javap`
+    - `Object` 클래스에 선언되어 있는 모든 메소드는 여러분들이 `Overriding` 해야 하나요?
+        - 모든 메소드를 `Overriding` 할 필요 없음
+    - `Object` 클래스의 `clone()` 메소드의 용도는 무엇인가요?
+        - 객체의 복사본을 만들어 리턴
+    - `System.out.printIn()` 메소드를 사용하여 클래스를 출력했을 때 호출되는 `Object` 클래스에 있는 메소드는 무엇인가요?
+        - `toString()`
+    - 객체의 주소를 비교하는 것이 아닌, 값을 비교하려면 `Object` 클래스에 선언되어 있는 어떤 메소드를 `overriding`해야 하나요?
+        - `equals()`
+    - `Object` 클래스에 선언되어 있는 `hashcode()`라는 메소드는 어떤 타입의 값을 리턴하나요?
+        - `int`

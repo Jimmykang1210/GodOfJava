@@ -32,11 +32,11 @@
         - 멀티 쓰레드 환경을 제공하기 때문에, 동시에 여러 작업을 수행할 수 있음, 사용자에게 매우 빠른 사용 환경을 제공
         
 
-![Untitled](./images/19_img_01.png)
+![Untitled](../images/19_img_01.png)
 
-![Untitled](./images/19_img_02.png)
+![Untitled](../images/19_img_02.png)
 
-![Untitled](./images/19_img_03.png)
+![Untitled](../images/19_img_03.png)
 
 - 자바 컴파일러는 컴파일 시, 매우 엄격한 정적인 점검을 수행, 실행 시에 동적으로 필요한 프로그램들을 링크 시킴
 - JIT (Just-In-Time)

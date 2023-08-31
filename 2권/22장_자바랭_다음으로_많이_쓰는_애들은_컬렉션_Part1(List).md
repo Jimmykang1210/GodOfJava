@@ -17,7 +17,7 @@
     - 먼저 들어온 것이 먼저 나가는 `Queue` 형
     - `key-value`로 저장되는 `Map` 형
 
-![Untitled](./images/22_img_01.png)
+![Untitled](../images/22_img_01.png)
 
 - `List` 인터페이스는 `Collection` 인터페이스를 확장
     - `Collection`을 확장한 다른 인터페이스 차이점은 배열처럼 “순서”가 존재
